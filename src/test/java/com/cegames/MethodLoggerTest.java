@@ -24,7 +24,7 @@ public class MethodLoggerTest {
      * This is just to demonstrate to a user how it works.
      */
     @Rule
-    public static MethodLogger methodLogger = new MethodLogger(log);
+    public static MethodLogger methodLogger = new MethodLogger();
 
     @Test
     public void testEmptyConstructor() {
@@ -58,35 +58,20 @@ public class MethodLoggerTest {
         MethodLogger testMethodLogger = new MethodLogger(mlog);
         testMethodLogger.starting(description);
         
-        verify(mlog).info(MethodLogger.DEFAULT_FORMAT, MethodLogger.DEFAULT_PREFIX, methodName);
+        verify(mlog).info(MethodLogger.DEFAULT_FORMAT, methodName);
     }
 
     @Test
     public void testLoggerPrefixConstructor() {
         String methodName = "anotherTest";
-        String testPrefix = "About to begin this one: ";
-        Logger mlog = mock(Logger.class);
-        Description description = mock(Description.class);
-        when(description.getMethodName()).thenReturn(methodName);
-
-        MethodLogger testMethodLogger = new MethodLogger(mlog, testPrefix);
-        testMethodLogger.starting(description);
-
-        verify(mlog).info(MethodLogger.DEFAULT_FORMAT, testPrefix, methodName);
-    }
-
-    @Test
-    public void testLoggerPrefixFormatConstructor() {
-        String methodName = "yetAnotherTest";
-        String testPrefix = "Rolling with this one: ";
         String testFormat = "<{}> - <{}>!!!!";
         Logger mlog = mock(Logger.class);
         Description description = mock(Description.class);
         when(description.getMethodName()).thenReturn(methodName);
 
-        MethodLogger testMethodLogger = new MethodLogger(mlog, testPrefix, testFormat);
+        MethodLogger testMethodLogger = new MethodLogger(mlog, testFormat);
         testMethodLogger.starting(description);
 
-        verify(mlog).info(testFormat, testPrefix, methodName);
+        verify(mlog).info(testFormat, methodName);
     }
 }
