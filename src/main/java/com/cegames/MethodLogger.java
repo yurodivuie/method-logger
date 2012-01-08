@@ -11,21 +11,30 @@ import org.slf4j.LoggerFactory;
  */
 public class MethodLogger extends TestWatcher
 {
-
-    private String messagePrefix = "Starting test";
+    public static String DEFAULT_PREFIX = "Starting test";
+    public static String DEFAULT_FORMAT = "{} [{}]";
+    
+    private String messagePrefix = DEFAULT_PREFIX;
+    private String messageFormat = DEFAULT_FORMAT;
     private Logger log = null;
 
 
     public MethodLogger() {
     }
     
-    MethodLogger(Logger logger) {
-        log = logger;
+    MethodLogger(Logger log) {
+        this.log = log;
     }
-    
-    MethodLogger(Logger logger, String prefix) {
-        log = logger;
-        messagePrefix = prefix;
+
+    MethodLogger(Logger log, String messagePrefix) {
+        this.log = log;
+        this.messagePrefix = messagePrefix;
+    }
+
+    MethodLogger(Logger log, String messagePrefix, String messageFormat) {
+        this.log = log;
+        this.messagePrefix = messagePrefix;
+        this.messageFormat = messageFormat;
     }
 
     /**
@@ -35,7 +44,7 @@ public class MethodLogger extends TestWatcher
     @Override
     protected void starting(Description description) {
         prepareLogger(description);
-        log.info("{} [{}]", messagePrefix, description.getMethodName());
+        log.info(messageFormat, messagePrefix, description.getMethodName());
     }
 
     /**
